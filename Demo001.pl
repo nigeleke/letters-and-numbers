@@ -1,0 +1,3 @@
+colour(yellow).
+
+% colour(red).
