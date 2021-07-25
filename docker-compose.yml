@@ -6,3 +6,5 @@ services:
     image: nigeleke/letters-and-numbers
     expose: 
       - 80
+
+      
