@@ -33,6 +33,13 @@ bin/
 *.iws
 .idea
 
+# node
+node_modules
+build
+npm-debug.log
+.nyc
+.env
+
 # mac
 .DS_Store
 
