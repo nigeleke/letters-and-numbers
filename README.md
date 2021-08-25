@@ -17,9 +17,7 @@ I was interested to see how Scala, being an expressive and concise language, was
 
 This was later extended as to compile to ScalaJS, and explore a ScalaJS/Laminar front-end. 
 
-```
 Warning - The Laminar code and constructs are not pretty - especially wrt to signal handling and reactiveness - (based on lack of experience in both ScalaJS and Laminar)
-```
 
 ## Rust
 
