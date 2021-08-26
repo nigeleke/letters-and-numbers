@@ -31,7 +31,7 @@ impl Expression {
     }
   }
 
-  pub fn from(numbers: &Vec<i32>) -> Vec<Result> {
+  pub fn from(numbers: &[i32]) -> Vec<Result> {
     let size = numbers.len();
     if size <= 1 {
       numbers

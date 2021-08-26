@@ -1,17 +1,19 @@
 use crate::expression::Expression;
 use crate::result::Result;
 
+use comp::iter;
 use itertools::Itertools;
+use std::collections::HashSet;
 use std::iter::IntoIterator;
 use std::iter::Iterator;
 
 pub struct Resolver;
 
 impl Resolver {
-  pub fn find_solutions(operands: &Vec<i32>, goal: i32) -> Vec<String> {
-    return iter! {
+  pub fn find_solutions(operands: &[i32], goal: i32) -> Vec<String> {
+    let results: HashSet<String> = iter! {
       let n <- 1..6;
-      let combination <- operands.into_iter().combinations(n);
+      let combination <- operands.iter().combinations(n);
       let len = combination.len();
       let permutation <- combination.into_iter().permutations(len);
       let results = permutation.expressions();
@@ -19,7 +21,9 @@ impl Resolver {
       if result.value == Some(goal);
       result.to_string()
     }
-    .collect::<Vec<String>>();
+    .collect::<HashSet<String>>();
+
+    results.into_iter().collect::<Vec<String>>()
   }
 }
 
