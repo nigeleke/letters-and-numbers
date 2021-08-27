@@ -43,6 +43,9 @@ npm-debug.log
 # mac
 .DS_Store
 
+# rust / yew
+dist/
+
 # other?
 .history
 .scala_dependencies

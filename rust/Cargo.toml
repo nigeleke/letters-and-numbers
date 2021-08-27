@@ -6,6 +6,7 @@ edition = "2018"
 [dependencies]
 comp = "0.2.1"
 itertools = "0.10.1"
+yew = "0.18"
 
 [dev-dependencies]
 quickcheck = "1"
