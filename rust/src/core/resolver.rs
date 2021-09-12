@@ -1,5 +1,5 @@
-use crate::expression::Expression;
-use crate::result::Result;
+use crate::core::expression::*;
+use crate::core::result::*;
 
 use comp::iter;
 use itertools::Itertools;

@@ -1,5 +1,5 @@
-use crate::operator::Operator;
-use crate::result::Result;
+use crate::core::operator::*;
+use crate::core::result::*;
 
 #[derive(Clone, Debug)]
 pub enum Expression {
