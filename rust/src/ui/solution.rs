@@ -1,12 +1,7 @@
-use crate::ui::goal::*;
-use crate::ui::numbers::*;
-
 use yew::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct SolutionProps {
-  pub numbers: NumbersValue,
-  pub goal: GoalValue,
   pub solution: String,
   pub active: bool,
   pub on_action: Callback<SolutionMsg>,
@@ -55,7 +50,7 @@ impl Component for Solution {
 
   fn update(&mut self, msg: Self::Message) -> ShouldRender {
     self.props.on_action.emit(msg);
-    true
+    false
   }
 
   fn change(&mut self, props: Self::Properties) -> ShouldRender {

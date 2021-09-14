@@ -5,7 +5,13 @@ use yew::prelude::*;
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct NumberProps {
   pub active: bool,
-  pub on_update: Callback<Option<i32>>,
+  pub on_update: Callback<NumberValue>,
+}
+
+#[derive(Clone, Debug)]
+pub enum NumberValue {
+  Valid(i32),
+  Invalid(String),
 }
 
 #[derive(Debug)]
@@ -17,26 +23,29 @@ pub enum NumberMsg {
 pub struct Number {
   props: NumberProps,
   link: ComponentLink<Self>,
-  maybe_number: Option<i32>,
+  value: NumberValue,
 }
 
 impl Number {
-  fn validate(s: &str) -> Option<i32> {
+  fn validate(s: &str) -> NumberValue {
     match s.parse::<i32>() {
       Ok(i) => {
         let is_valid = 1 <= i && i <= 10 || i == 25 || i == 50 || i == 75 || i == 100;
         if is_valid {
-          Some(i)
+          NumberValue::Valid(i)
         } else {
-          None
+          NumberValue::Invalid(s.to_string())
         }
       }
-      Err(_) => None,
+      Err(_) => NumberValue::Invalid(s.to_string()),
     }
   }
 
   fn is_valid(&self) -> bool {
-    return self.maybe_number.is_some();
+    match self.value {
+      NumberValue::Valid(_) => true,
+      NumberValue::Invalid(_) => false,
+    }
   }
 }
 
@@ -48,15 +57,15 @@ impl Component for Number {
     Number {
       props,
       link,
-      maybe_number: None,
+      value: NumberValue::Invalid("".to_string()),
     }
   }
 
   fn update(&mut self, msg: Self::Message) -> ShouldRender {
     match msg {
       NumberMsg::Validate(s) => {
-        self.maybe_number = Number::validate(&s);
-        self.props.on_update.emit(self.maybe_number);
+        self.value = Number::validate(&s);
+        self.props.on_update.emit(self.value.clone());
         true
       }
     }

@@ -5,16 +5,16 @@ use yew::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct GoalProps {
-  pub value: GoalValue,
-  pub on_update: Callback<GoalValue>,
   pub active: bool,
+  pub on_update: Callback<GoalValue>,
   pub revealed: bool,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum GoalValue {
   Auto(i32),
-  Manual(Option<i32>),
+  Manual(i32),
+  Invalid(String),
 }
 
 #[derive(Debug)]
@@ -25,40 +25,51 @@ pub enum GoalMsg {
 pub struct Goal {
   props: GoalProps,
   link: ComponentLink<Self>,
-  displayed_value: String,
+  value: GoalValue,
 }
 
 impl Goal {
   fn validate(s: &str) -> GoalValue {
-    fn valid_target(i: i32) -> GoalValue {
+    fn validated_manual(i: i32) -> GoalValue {
       let is_valid = 100 <= i && i <= 999;
       if is_valid {
-        GoalValue::Manual(Some(i))
+        GoalValue::Manual(i)
       } else {
-        GoalValue::Manual(None)
+        GoalValue::Invalid(i.to_string())
       }
     }
-    fn valid_auto(s: &str) -> GoalValue {
+    fn validated_auto(s: &str) -> GoalValue {
       if s.len() == 0 {
         Goal::random_auto()
       } else {
-        GoalValue::Manual(None)
+        GoalValue::Invalid(s.to_string())
       }
     }
     match s.parse::<i32>() {
-      Ok(i) => valid_target(i),
-      Err(_) => valid_auto(s),
+      Ok(i) => validated_manual(i),
+      Err(_) => validated_auto(s),
     }
   }
 
   fn is_valid(&self) -> bool {
-    return self.props.value != GoalValue::Manual(None);
+    match self.value {
+      GoalValue::Invalid(_) => false,
+      _ => true,
+    }
   }
 
   pub fn random_auto() -> GoalValue {
     let mut rng = rand::thread_rng();
     let target = Uniform::from(100..1000);
     GoalValue::Auto(target.sample(&mut rng))
+  }
+
+  fn as_revealed(&self) -> String {
+    match &self.value {
+      GoalValue::Auto(i) => i.to_string(),
+      GoalValue::Manual(i) => i.to_string(),
+      GoalValue::Invalid(s) => s.to_string(),
+    }
   }
 }
 
@@ -70,7 +81,7 @@ impl Component for Goal {
     Goal {
       props,
       link,
-      displayed_value: "".to_string(),
+      value: Goal::random_auto(),
     }
   }
 
@@ -79,11 +90,6 @@ impl Component for Goal {
       GoalMsg::Validate(s) => {
         let goal = Goal::validate(&s);
         self.props.on_update.emit(goal);
-        self.displayed_value = match (goal, self.props.revealed) {
-          (GoalValue::Auto(target), true) => target.to_string(),
-          (GoalValue::Auto(_), false) => "".to_string(),
-          (GoalValue::Manual(_), _) => s.to_string(),
-        };
         true
       }
     }
@@ -91,13 +97,6 @@ impl Component for Goal {
 
   fn change(&mut self, props: Self::Properties) -> ShouldRender {
     let changed = self.props != props;
-    if props.revealed {
-      self.displayed_value = match props.value {
-        GoalValue::Auto(target) => target.to_string(),
-        GoalValue::Manual(Some(target)) => target.to_string(),
-        GoalValue::Manual(None) => self.displayed_value.to_string(),
-      }
-    }
     self.props = props;
     changed
   }
@@ -122,7 +121,7 @@ impl Component for Goal {
               hidden=!self.props.revealed
               size="3"
               title="Target number"
-              value=self.displayed_value.to_string() />
+              value=self.as_revealed() />
           </ValidateItem>
         </Validate>
       </div>
