@@ -15,14 +15,18 @@ pub enum DesktopMsg {
 
 pub struct Desktop {
   link: ComponentLink<Self>,
-  numbers: Option<NumbersValue>,
-  goal: Option<GoalValue>,
+  numbers: NumbersValue,
+  goal: GoalValue,
   goal_revealed: bool,
   solving: bool,
   solution: String,
 }
 
 impl Desktop {
+  fn enable_solve(&self) -> bool {
+    self.goal.is_valid() && self.numbers.is_valid() &&!self.solving && self.solution.is_empty()
+  }
+
   fn solve(numbers: &NumbersValue, goal: &GoalValue) -> String {
     let solutions = match (numbers, goal) {
       (NumbersValue::Valid(i1, i2, i3, i4, i5, i6), GoalValue::Auto(target)) => {
@@ -34,7 +38,7 @@ impl Desktop {
       (_, _) => vec![], // Unreachable
     };
 
-    if solutions.len() > 0 {
+    if !solutions.is_empty() {
       solutions[0].to_string()
     } else {
       "No solution".to_string()
@@ -49,8 +53,8 @@ impl Component for Desktop {
   fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
     Desktop {
       link,
-      numbers: None,
-      goal: None,
+      numbers: NumbersValue::Unset,
+      goal: Goal::random_auto(),
       goal_revealed: false,
       solving: false,
       solution: "".to_string(),
@@ -58,13 +62,12 @@ impl Component for Desktop {
   }
 
   fn update(&mut self, msg: Self::Message) -> ShouldRender {
-    log::info!("Desktop::update {:?}", msg);
     match msg {
       DesktopMsg::GoalUpdated(goal) => {
-        self.goal = Some(goal);
+        self.goal = goal;
       }
       DesktopMsg::NumbersUpdated(numbers) => {
-        self.numbers = Some(numbers);
+        self.numbers = numbers;
       }
       DesktopMsg::Action(SolutionMsg::Solve) => {
         self.solving = true;
@@ -72,18 +75,12 @@ impl Component for Desktop {
         self.link.send_message(DesktopMsg::Solve);
       }
       DesktopMsg::Solve => {
-        let numbers = self
-          .numbers
-          .as_ref()
-          .unwrap_or(&NumbersValue::Valid(0, 0, 0, 0, 0, 0));
-        let goal = self.goal.as_ref().unwrap_or(&GoalValue::Auto(0));
-        self.solution = Desktop::solve(numbers, goal);
+        self.solution = Desktop::solve(&self.numbers, &self.goal);
         self.solving = false;
       }
       DesktopMsg::Action(SolutionMsg::Reset) => {
-        log::info!("Reset: ");
-        self.numbers = None;
-        self.goal = None;
+        self.numbers = NumbersValue::Unset;
+        self.goal = Goal::random_auto();
         self.goal_revealed = false;
         self.solution = "".to_string();
       }
@@ -91,17 +88,16 @@ impl Component for Desktop {
     true
   }
 
-  fn change(&mut self, props: Self::Properties) -> ShouldRender {
-    log::info!("Desktop::change {:?}", props);
+  fn change(&mut self, _props: Self::Properties) -> ShouldRender {
     true
   }
 
   fn view(&self) -> Html {
     html! {
       <div class=classes!("w3-center")>
-        <Goal active=!self.solving revealed=self.goal_revealed on_update=self.link.callback(DesktopMsg::GoalUpdated) />
-        <Numbers active=!self.solving on_update=self.link.callback(DesktopMsg::NumbersUpdated) />
-        <Solution solution=self.solution.to_string() active=!self.solving on_action=self.link.callback(DesktopMsg::Action) />
+        <Goal value=self.goal active=!self.solving revealed=self.goal_revealed on_update=self.link.callback(DesktopMsg::GoalUpdated) />
+        <Numbers value=self.numbers active=!self.solving on_update=self.link.callback(DesktopMsg::NumbersUpdated) />
+        <Solution enable_solve=self.enable_solve() solution=self.solution.to_string() on_action=self.link.callback(DesktopMsg::Action) />
       </div>
     }
   }

@@ -2,8 +2,8 @@ use yew::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct SolutionProps {
+  pub enable_solve: bool,
   pub solution: String,
-  pub active: bool,
   pub on_action: Callback<SolutionMsg>,
 }
 
@@ -19,24 +19,8 @@ pub struct Solution {
 }
 
 impl Solution {
-  fn is_solved(&self) -> bool {
-    self.props.solution.len() != 0
-  }
-
-  fn disable_solve(&self) -> bool {
-    !(self.props.active)
-  }
-
-  fn show_solve(&self) -> bool {
-    !self.is_solved()
-  }
-
-  fn disable_reset(&self) -> bool {
-    !(self.props.active)
-  }
-
-  fn show_reset(&self) -> bool {
-    self.is_solved()
+  fn have_solution(&self) -> bool {
+    !self.props.solution.is_empty()
   }
 }
 
@@ -61,23 +45,23 @@ impl Component for Solution {
 
   fn view(&self) -> Html {
     html! {
-      <div class=classes!("w3-center", "w3-section", "w3-xlarge")>
-        <div>
-          <button
-            title="Find solution"
-            hidden=!self.show_solve()
-            disabled=self.disable_solve()
-            onclick=self.link.callback(|_| SolutionMsg::Solve)
-            class=classes!("fa", "fa-play", "w3-theme-l5", "w3-round-large") />
-          <button
-            title="Reset"
-            hidden=!self.show_reset()
-            disabled=self.disable_reset()
-            onclick=self.link.callback(|_| SolutionMsg::Reset)
-            class=classes!("fa", "fa-undo", "w3-theme-l5", "w3-round-large") />
-        </div>
-        <p>{ self.props.solution.to_string() }</p>
-      </div>
-    }
+              <div class=classes!("w3-center", "w3-section", "w3-xlarge")>
+                <div>
+                  <button
+                    title="Find solution"
+                    hidden=self.have_solution()
+                    disabled=!self.props.enable_solve
+                    onclick=self.link.callback(|_| SolutionMsg::Solve)
+                    class=classes!("fa", "fa-play", "w3-theme-l5", "w3-round-large") />
+                  <button
+                    title="Reset"
+                    hidden=!self.have_solution()
+                    disabled=!self.have_solution()
+                    onclick=self.link.callback(|_| SolutionMsg::Reset)
+                    class=classes!("fa", "fa-undo", "w3-theme-l5", "w3-round-large") />
+                </div>
+                <p>{ self.props.solution.to_string() }</p>
+              </div>
+            }
   }
 }

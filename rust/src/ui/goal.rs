@@ -5,16 +5,23 @@ use yew::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct GoalProps {
+  pub value: GoalValue,
   pub active: bool,
   pub on_update: Callback<GoalValue>,
   pub revealed: bool,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum GoalValue {
   Auto(i32),
   Manual(i32),
-  Invalid(String),
+  Invalid,
+}
+
+impl GoalValue {
+  pub fn is_valid(&self) -> bool {
+    !matches!(self, GoalValue::Invalid)
+  }
 }
 
 #[derive(Debug)]
@@ -25,24 +32,32 @@ pub enum GoalMsg {
 pub struct Goal {
   props: GoalProps,
   link: ComponentLink<Self>,
-  value: GoalValue,
+  value_impl: String,
 }
 
 impl Goal {
+  fn value_to_impl(value: GoalValue) -> String {
+    match value {
+      GoalValue::Auto(i) => i.to_string(),
+      GoalValue::Manual(i) => i.to_string(),
+      GoalValue::Invalid => "".into(),
+    }
+  }
+
   fn validate(s: &str) -> GoalValue {
     fn validated_manual(i: i32) -> GoalValue {
-      let is_valid = 100 <= i && i <= 999;
+      let is_valid = (100..=999).contains(&i);
       if is_valid {
         GoalValue::Manual(i)
       } else {
-        GoalValue::Invalid(i.to_string())
+        GoalValue::Invalid
       }
     }
     fn validated_auto(s: &str) -> GoalValue {
-      if s.len() == 0 {
+      if s.is_empty() {
         Goal::random_auto()
       } else {
-        GoalValue::Invalid(s.to_string())
+        GoalValue::Invalid
       }
     }
     match s.parse::<i32>() {
@@ -52,23 +67,20 @@ impl Goal {
   }
 
   fn is_valid(&self) -> bool {
-    match self.value {
-      GoalValue::Invalid(_) => false,
-      _ => true,
-    }
+    !matches!(self.props.value, GoalValue::Invalid)
   }
 
   pub fn random_auto() -> GoalValue {
     let mut rng = rand::thread_rng();
-    let target = Uniform::from(100..1000);
+    let target = Uniform::from(100..=999);
     GoalValue::Auto(target.sample(&mut rng))
   }
 
   fn as_revealed(&self) -> String {
-    match &self.value {
+    match &self.props.value {
       GoalValue::Auto(i) => i.to_string(),
       GoalValue::Manual(i) => i.to_string(),
-      GoalValue::Invalid(s) => s.to_string(),
+      GoalValue::Invalid => self.value_impl.to_string(),
     }
   }
 }
@@ -78,10 +90,11 @@ impl Component for Goal {
   type Properties = GoalProps;
 
   fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+    let value_impl = Goal::value_to_impl(props.value);
     Goal {
       props,
       link,
-      value: Goal::random_auto(),
+      value_impl,
     }
   }
 
