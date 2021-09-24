@@ -9,7 +9,8 @@ class DefectsTestSpec extends AnyWordSpec with Matchers:
 
     "actually have a solution" in {
       val failedSolutions = Map(
-        Seq(75, 3, 6, 5, 5, 1) -> 559
+        Seq(75, 3, 6, 5, 5, 1) -> 559,
+        Seq(5, 8, 8, 2, 100, 50) -> 543
       )
 
       failedSolutions.foreach { (numbers, goal) =>
