@@ -1,4 +1,4 @@
-use crate::ui::number::*;
+use crate::number::*;
 
 use yew::prelude::*;
 
@@ -98,7 +98,7 @@ impl Component for Numbers {
         };
         self.props.on_update.emit(validated_numbers);
         true
-      },
+      }
     }
   }
 

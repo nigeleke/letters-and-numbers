@@ -1,4 +1,4 @@
-use crate::ui::validate::*;
+use crate::validate::*;
 
 use rand::distributions::{Distribution, Uniform};
 use yew::prelude::*;

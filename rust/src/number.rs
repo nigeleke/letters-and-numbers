@@ -1,4 +1,4 @@
-use crate::ui::validate::*;
+use crate::validate::*;
 
 use yew::prelude::*;
 
@@ -20,7 +20,7 @@ impl NumberValue {
   pub fn trivial_value(&self) -> i32 {
     match self {
       NumberValue::Valid(i) => *i,
-      _ => 0
+      _ => 0,
     }
   }
 }

@@ -1,8 +1,9 @@
-use crate::core::resolver::*;
-use crate::ui::goal::*;
-use crate::ui::numbers::*;
-use crate::ui::solution::*;
+use crate::goal::*;
+use crate::numbers::*;
+use crate::resolver_service::*;
+use crate::solution::*;
 
+use yew::agent::*;
 use yew::prelude::*;
 
 #[derive(Debug)]
@@ -11,10 +12,13 @@ pub enum DesktopMsg {
   NumbersUpdated(NumbersValue),
   Action(SolutionMsg),
   Solve,
+  Solved(String),
 }
 
 pub struct Desktop {
   link: ComponentLink<Self>,
+  resolver: Dispatcher<ResolverService>,
+  _resolution: Box<dyn Bridge<ResolverService>>,
   numbers: NumbersValue,
   goal: GoalValue,
   goal_revealed: bool,
@@ -24,24 +28,18 @@ pub struct Desktop {
 
 impl Desktop {
   fn enable_solve(&self) -> bool {
-    self.goal.is_valid() && self.numbers.is_valid() &&!self.solving && self.solution.is_empty()
+    self.goal.is_valid() && self.numbers.is_valid() && !self.solving && self.solution.is_empty()
   }
 
-  fn solve(numbers: &NumbersValue, goal: &GoalValue) -> String {
-    let solutions = match (numbers, goal) {
+  fn unwrap(numbers: NumbersValue, goal: GoalValue) -> (Vec<i32>, i32) {
+    match (numbers, goal) {
       (NumbersValue::Valid(i1, i2, i3, i4, i5, i6), GoalValue::Auto(target)) => {
-        Resolver::find_solutions(&[*i1, *i2, *i3, *i4, *i5, *i6], *target)
+        (vec![i1, i2, i3, i4, i5, i6], target)
       }
       (NumbersValue::Valid(i1, i2, i3, i4, i5, i6), GoalValue::Manual(target)) => {
-        Resolver::find_solutions(&[*i1, *i2, *i3, *i4, *i5, *i6], *target)
+        (vec![i1, i2, i3, i4, i5, i6], target)
       }
-      (_, _) => vec![], // Unreachable
-    };
-
-    if !solutions.is_empty() {
-      solutions[0].to_string()
-    } else {
-      "No solution".to_string()
+      (_, _) => (vec![], 0), // Unreachable
     }
   }
 }
@@ -51,8 +49,11 @@ impl Component for Desktop {
   type Properties = ();
 
   fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-    Desktop {
+    let callback = link.callback(DesktopMsg::Solved);
+    Self {
       link,
+      resolver: ResolverService::dispatcher(),
+      _resolution: ResolverService::bridge(callback),
       numbers: NumbersValue::Unset,
       goal: Goal::random_auto(),
       goal_revealed: false,
@@ -65,31 +66,40 @@ impl Component for Desktop {
     match msg {
       DesktopMsg::GoalUpdated(goal) => {
         self.goal = goal;
+        true
       }
       DesktopMsg::NumbersUpdated(numbers) => {
         self.numbers = numbers;
+        true
       }
       DesktopMsg::Action(SolutionMsg::Solve) => {
         self.solving = true;
         self.goal_revealed = true;
         self.link.send_message(DesktopMsg::Solve);
+        true
       }
       DesktopMsg::Solve => {
-        self.solution = Desktop::solve(&self.numbers, &self.goal);
+        let (numbers, goal) = Desktop::unwrap(self.numbers, self.goal);
+        self.resolver.send(Request::Solve(numbers, goal));
+        false
+      }
+      DesktopMsg::Solved(solution) => {
+        self.solution = solution;
         self.solving = false;
+        true
       }
       DesktopMsg::Action(SolutionMsg::Reset) => {
         self.numbers = NumbersValue::Unset;
         self.goal = Goal::random_auto();
         self.goal_revealed = false;
         self.solution = "".to_string();
+        true
       }
-    };
-    true
+    }
   }
 
   fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-    true
+    false
   }
 
   fn view(&self) -> Html {

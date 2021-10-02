@@ -6,5 +6,5 @@ services:
       context: .
       dockerfile: Dockerfile
     image: nigeleke/letters-and-numbers
-    expose:
-      - 80
+    ports:
+      - 10000:80
