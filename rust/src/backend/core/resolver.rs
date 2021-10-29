@@ -1,5 +1,4 @@
-use crate::expression::*;
-use crate::result::*;
+use super::expression::*;
 
 use comp::iter;
 use itertools::Itertools;
@@ -9,29 +8,30 @@ use std::iter::Iterator;
 pub struct Resolver;
 
 impl Resolver {
-  pub fn find_solutions(operands: &[i32], goal: i32) -> Vec<String> {
-    let results = iter! {
+  pub fn find_solutions(operands: &[isize], goal: isize) -> Vec<String> {
+    let solutions = iter! {
       let n <- 1..=6;
       let permutation <- Vec::from(operands).into_iter().permutations(n);
-      let results = permutation.expressions();
-      let result <- results;
-      if result.value == Some(goal);
-      result.clone()
+      let expressions = permutation.expressions();
+      let expression <- expressions;
+      let value = expression.value();
+      if value == Some(goal);
+      expression
     };
 
-    results
+    solutions
       .into_iter()
-      .map(|r| r.description)
+      .map(|s| s.description())
       .collect::<Vec<String>>()
   }
 }
 
 trait ExpressionsExt {
-  fn expressions(&self) -> std::vec::Vec<Result>;
+  fn expressions(&self) -> std::vec::Vec<Expression>;
 }
 
-impl ExpressionsExt for Vec<i32> {
-  fn expressions(&self) -> std::vec::Vec<Result> {
+impl ExpressionsExt for Vec<isize> {
+  fn expressions(&self) -> std::vec::Vec<Expression> {
     Expression::from(self)
   }
 }

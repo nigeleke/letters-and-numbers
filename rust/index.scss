@@ -1,0 +1,119 @@
+@use "color";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(45deg, color.$theme-d1 50%, color.$theme-l1 100%);
+  font-size: 1.5rem;
+}
+
+header,
+main,
+footer {
+  color: color.$text-theme;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+header {
+  font-size: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+main {
+  flex: 1 100%;
+  align-items: center;
+}
+
+footer {
+  font-size: 0.75rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+input {
+  color: color.$theme-d4;
+  background-color: color.$theme-l2;
+  border: 1;
+}
+
+datalist {
+  color: color.$theme-d4;
+  background-color: color.$theme-l2;
+}
+
+datalist option::hover,
+datalist option::focus {
+  color: color.$theme-l2;
+  background-color: color.$theme-d4;
+  outline: 0 none;
+}
+
+.icon-button {
+  margin-top: 2.5rem;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+}
+
+.main-app {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.goal {
+  padding-top: 1rem;
+}
+
+.goal * > input {
+  font-size: 2.5rem;
+  text-align: center;
+  border-radius: 0.75rem;
+}
+
+.numbers {
+  padding-top: 1rem;
+}
+
+.numbers > .validated > span {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.number * > input {
+  font-size: 2rem;
+  text-align: center;
+  border-radius: 0.75rem;
+}
+
+.solution {
+  padding-top: 3rem;
+  font-size: 2.5rem;
+}
+
+.validated {
+  display: flex;
+  flex-direction: row;
+}
+
+.warning-border {
+  border-color: gold;
+  border-width: 5;
+  border-style: solid;
+}
+
+.warning-icon::after {
+  content: "⚠️";
+  font-size: 0.75rem;
+  vertical-align: text-top;
+  margin-left: -1.25rem;
+}

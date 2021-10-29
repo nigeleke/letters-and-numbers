@@ -1,32 +1,57 @@
-mod desktop;
-mod expression;
-mod goal;
-mod number;
-mod numbers;
-mod operator;
-mod resolver;
-mod resolver_service;
-mod result;
-mod solution;
-mod validate;
-mod warning_icon;
+mod frontend {
+  pub mod actions {
+    pub mod action;
+  }
+  pub mod components {
+    mod goal_view;
+    mod icon_button;
+    mod main_app;
+    mod number_view;
+    mod numbers_view;
+    mod solution_view;
+    mod validated;
+    mod warning_border;
+    mod warning_icon;
+    pub use main_app::MainApp;
+  }
+}
 
-use crate::desktop::*;
+mod shared {
+  pub mod goal;
+  pub mod number;
+  pub mod numbers;
+  pub mod solution;
+}
+
+mod api {
+  pub mod resolver_service;
+}
+
+pub mod backend {
+  pub mod core {
+    mod expression;
+    mod operator;
+    pub mod resolver;
+  }
+}
+
+use frontend::components::*;
 
 use yew::prelude::*;
 
-struct App;
+#[derive(Debug)]
+pub struct App;
 
 impl Component for App {
   type Message = ();
   type Properties = ();
 
   fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-    App {}
+    Self
   }
 
   fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-    false
+    unimplemented!()
   }
 
   fn change(&mut self, _props: Self::Properties) -> ShouldRender {
@@ -35,11 +60,13 @@ impl Component for App {
 
   fn view(&self) -> Html {
     html! {
-        <div>
-            <header class=classes!("w3-center", "w3-theme-dl", "w3-xxlarge")>{ "Letters and Numbers" }</header>
-            <Desktop />
-            <footer class=classes!("w3-bottom", "w3-center", "w3-theme-d3", "w3-tiny")>{ "Copyright (C) 2021; Nigel Eke. All rights reserved." }</footer>
-        </div>
+      <>
+        <header>{"Letters and Numbers"}</header>
+        <main>
+          <MainApp />
+        </main>
+        <footer>{"Copyright © Nigel Eke; All rights reserved."}</footer>
+      </>
     }
   }
 }
