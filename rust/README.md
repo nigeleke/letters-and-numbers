@@ -1,5 +1,10 @@
 # Letters and Numbers - Rust implementation
 
+## Build
+```
+trunk build --release
+docker-compose build
+```
 ## Note
 
 1. The <code>Backend</code> isn't _really_ a backend. The folder is named as such simply to structure the implementation.
