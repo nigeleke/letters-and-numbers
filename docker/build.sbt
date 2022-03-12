@@ -13,7 +13,7 @@ val scalatestVersion = "3.2.11"
 lazy val root = project
   .in(file("."))
   .settings(name := "letter-and-numbers")
-  .aggregate(api, core, shared, ui)
+  .aggregate(api, core, ui)
 
 lazy val api = project
   .settings(
@@ -37,11 +37,6 @@ lazy val core = project
       "org.scalactic" %% "scalactic" % scalatestVersion,
       "org.scalatest" %% "scalatest" % scalatestVersion % "test"
     )
-  )
-
-lazy val shared = project
-  .settings(
-    name := "shared"
   )
 
 lazy val ui = project
