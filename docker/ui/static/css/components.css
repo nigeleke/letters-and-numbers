@@ -1,0 +1,13 @@
+.goal {
+  text-align: center;
+}
+
+.number {
+  text-align: center;
+}
+
+.warning-icon {
+  position: absolute;
+  margin-left: -18px;
+  margin-top: 6px;
+}
