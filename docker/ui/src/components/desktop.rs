@@ -1,16 +1,60 @@
 use yew::prelude::*;
 
-use crate::goal_view::*;
-use crate::numbers_view::*;
+use crate::model::goal::*;
+use crate::model::numbers::*;
+
+use super::goal_view::*;
+use super::numbers_view::*;
+
+use std::ops::Deref;
+
+// use yew::{function_component, html, Html, Properties, Callback};
+//
+// #[derive(Properties, PartialEq)]
+// pub struct Props {
+//   pub on_name_entry: Callback<String>,
+// }
+//
+// #[function_component]
+// fn HelloWorld(props: &Props) -> Html {
+//
+//   props.on_name_entry.emit(String::from("Bob"));
+//
+//   html! { "Hello" }
+// }
+//
+// // Then supply the prop
+// #[function_component]
+// fn App() -> Html {
+//   let on_name_entry: Callback<String> = Callback::from(move |name: String| {
+//     let greeting = format!("Hey, {}!", name);
+//     // web_sys::console::log_1(&greeting.into()); // if uncommented will print
+//   });
+//
+//   html! {<HelloWorld {on_name_entry} />}
+// }
+
 
 #[function_component(Desktop)]
 pub fn desktop() -> Html {
-    html! {
-      <div class="desktop">
-        <GoalView enabled=true valid=true />
-        <NumbersView enabled=true valid=true />
-      </div>
-    }
+  let goal_state = use_state(|| Goal::new());
+  let goal = goal_state.deref().clone();
+  let on_goal_change = Callback::from(move |updated_goal: Goal| {
+    goal_state.set(updated_goal.clone());
+  });
+
+  let numbers_state = use_state(|| Numbers::new());
+  let numbers = numbers_state.deref().clone();
+  let on_numbers_change = Callback::from(move |updated_numbers: Numbers| {
+    numbers_state.set(updated_numbers.clone());
+  });
+
+  html! {
+    <div class="desktop">
+      <GoalView enabled=true value={goal} on_change={on_goal_change} />
+      <NumbersView enabled=true value={numbers} on_change={on_numbers_change} />
+    </div>
+  }
 }
 
 // pub struct MainApp {

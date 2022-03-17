@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
-use crate::warning_border::*;
-use crate::warning_icon::*;
+use super::warning_border::*;
+use super::warning_icon::*;
 
 //
 // #[derive(Debug)]

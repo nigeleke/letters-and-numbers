@@ -1,134 +1,66 @@
 use yew::prelude::*;
 
-use crate::number_view::*;
-use crate::validated::*;
+use crate::model::number::*;
+use crate::model::numbers::*;
 
-//
-// #[derive(Debug)]
-// pub struct NumbersView {
-//   pub props: Props,
-//   pub link: ComponentLink<Self>,
-// }
-//
-// #[derive(Debug)]
-// pub enum Msg {
-//   NumberUpdated(usize, Number),
-// }
-//
+use super::number_view::*;
+use super::validated::*;
+
+use itertools::*;
+
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct Props {
   pub enabled: bool,
-  pub valid: bool,
-  // pub value: Numbers,
-  // pub on_change: Callback<Numbers>,
+  pub value: Numbers,
+  pub on_change: Callback<Numbers>,
 }
-//
-// impl Component for NumbersView {
-//   type Message = Msg;
-//   type Properties = Props;
-//
-//   fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-//     Self { props, link }
-//   }
-//
-//   fn update(&mut self, msg: Self::Message) -> ShouldRender {
-//     fn is_valid_set(ns: &[Number]) -> bool {
-//       let mut counts = vec![0; 101];
-//       for n in ns {
-//         if let Number::Valid(i) = n {
-//           let count_index = *i as usize;
-//           counts[count_index] += 1;
-//         }
-//       }
-//
-//       let sum: usize = counts.iter().sum();
-//
-//       let is_valid_count = |index: usize, max: usize| (counts[index] <= max) as usize;
-//
-//       let valid_lows: usize = (1..=10).map(|i| is_valid_count(i, 2)).sum();
-//       let valid_highs: usize = (25..=100).step_by(25).map(|i| is_valid_count(i, 1)).sum();
-//
-//       sum == 6 && valid_lows == 10 && valid_highs == 4
-//     }
-//
-//     let as_updated_numbers = |i, n| {
-//       let mut ns = match self.props.value.clone() {
-//         Numbers::Valid(numbers) => numbers,
-//         Numbers::Invalid(numbers) => numbers,
-//       };
-//       ns[i] = n;
-//       if is_valid_set(&ns) {
-//         Numbers::Valid(ns)
-//       } else {
-//         Numbers::Invalid(ns)
-//       }
-//     };
-//
-//     match msg {
-//       Msg::NumberUpdated(i, number) => {
-//         let numbers = as_updated_numbers(i, number);
-//         let notify = numbers != self.props.value;
-//         if notify {
-//           self.props.on_change.emit(numbers);
-//         };
-//         false
-//       }
-//     }
-//   }
-//
-//   fn change(&mut self, props: Self::Properties) -> ShouldRender {
-//     let render = self.props != props;
-//     self.props = props;
-//     render
-//   }
-//
-//   fn view(&self) -> Html {
-//     let on_change_number = |i| {
-//       self
-//         .link
-//         .callback(move |number| Msg::NumberUpdated(i, number))
-//     };
-//
-//     let numbers = match self.props.value.clone() {
-//       Numbers::Valid(numbers) => numbers,
-//       Numbers::Invalid(numbers) => numbers,
-//     };
-//
-//     let valid_numbers_count: isize = numbers
-//       .iter()
-//       .map(|number| number.is_valid() as isize)
-//       .sum();
-//     let valid = if valid_numbers_count < 6 {
-//       true
-//     } else {
-//       self.props.value.is_valid()
-//     };
-//
-//     html! {
-//       <div class="numbers">
-//         <Validated valid=valid use_border=true use_icon=false>
-//           {
-//             for (0..6).into_iter().map(|i| {
-//               let number = numbers[i];
-//               html!{ <NumberView value=number on_change=on_change_number(i) /> }
-//             })
-//           }
-//         </Validated>
-//       </div>
-//     }
-//   }
-// }
 
-// {
-// // for (0..6).into_iter().map(|i| {
-// //   let number = numbers[i];
-// //   html!{ <NumberView value={number} on_change=on_change_number(i) /> }
-// // })
-// }
+fn validate_each(ns: &[Number]) -> bool {
+  let valid_numbers: Vec<&Number> = ns.iter().filter(|n| n.is_valid()).collect();
+  valid_numbers.len() == 6
+}
+
+fn validate_group(ns: &[Number]) -> bool {
+  fn value_of(n: &Number) -> isize {
+    match *n {
+      Number::Valid(i) => i,
+      Number::Invalid => 0
+    }
+  }
+
+  let number_values: Vec<isize> = ns.iter().map(|n| value_of(n)).collect();
+  let mut counts = number_values.iter().counts_by(|n| n);
+
+  counts.retain(|i, count| {
+    if (1..=10).contains(*i) { *count > 2 }
+    else if vec![25, 50, 75, 100].contains(*i) { *count > 1 }
+    else { true }
+  });
+
+  counts.is_empty()
+}
+
+fn vec_to_numbers(ns: &[Number]) -> Numbers {
+  let is_valid = validate_group(&ns);
+  if is_valid { Numbers::Valid(ns[0], ns[1], ns[2], ns[3], ns[4], ns[5]) }
+  else { Numbers::Invalid(ns[0], ns[1], ns[2], ns[3], ns[4], ns[5]) }
+}
+
+fn numbers_to_vec(numbers: &Numbers) -> Vec<Number> {
+  match *numbers {
+    Numbers::Valid(n1, n2, n3, n4, n5, n6) => vec![n1, n2, n3, n4, n5, n6],
+    Numbers::Invalid(n1, n2, n3, n4, n5, n6) => vec![n1, n2, n3, n4, n5, n6]
+  }
+}
 
 #[function_component(NumbersView)]
 pub fn numbers_view(props: &Props) -> Html {
-    html! {
+  let value = props.value;
+  let valid = value.is_valid();
+  let value_vec = numbers_to_vec(&value);
+  let use_border = validate_each(&value_vec);
+
+  html! {
       <div class="numbers">
         <datalist id="number-data">
           <option value="1" />
@@ -146,11 +78,22 @@ pub fn numbers_view(props: &Props) -> Html {
           <option value="75" />
           <option value="100" />
         </datalist>
-        <Validated valid={props.valid} use_border=true use_icon=false>
+        <Validated {valid} {use_border} use_icon=false>
           {
-            for (0..6).into_iter().map(|_i| {
-              // let number = numbers[i];
-              html!{ <NumberView /> }
+            for (0..6).into_iter().map(|i| {
+              let on_numbers_change = props.on_change.clone();
+              let value_vec = numbers_to_vec(&value);
+              let number = value_vec[i];
+
+              let on_number_change = Callback::from(move |n: Number| {
+                log::info!("number {:?} changed {:?}", i, n);
+                let mut updated_numbers_vec = value_vec.clone();
+                updated_numbers_vec[i] = n;
+                let updated_numbers = vec_to_numbers(&updated_numbers_vec);
+                on_numbers_change.emit(updated_numbers);
+              });
+
+              html!{ <NumberView enabled={props.enabled} value={number} on_change={on_number_change} /> }
             })
           }
         </Validated>

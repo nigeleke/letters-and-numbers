@@ -1,8 +1,8 @@
 [package]
 name = "letters-and-numbers"
-version = "0.1.0"
+version = "0.1.0-SNAPSHOT"
 edition = "2018"
-description = "Letters and Numbers; Numbers game using Yew / Bulma"
+description = "Letters and Numbers ui"
 readme = "README.md"
 repository = "https://gitlab.com/nigeleke/letters-and-numbers/"
 keywords = ["yew", "ybc", "trunk"]
@@ -10,20 +10,15 @@ categories = ["gui", "wasm", "web-programming"]
 
 [dependencies]
 comp = "0.2.1"
-getrandom = { version = "0.2.3", features = ["js"] }
-itertools = "0.10.1"
-log = "0.4.6"
-rand = "0.8.4"
+getrandom = { version = "0.2.5", features = ["js"] }
+itertools = "0.10.3"
+log = "0.4.14"
+rand = "0.8.5"
 serde = { version = "1.0", features = ["derive"] }
-yew = "0.18"
+yew = "0.19"
 wasm-logger = "0.2.0"
+web-sys = "0.3.56"
 
 [dev-dependencies]
 quickcheck = "1"
 quickcheck_macros = "1"
-
-#[profile.dev]
-#opt-level = 0
-
-#[profile.release]
-#opt-level = 3
