@@ -2,24 +2,25 @@ use yew::prelude::*;
 use web_sys::HtmlInputElement;
 
 use crate::model::goal::*;
+use crate::model::solution::*;
 
 use super::validated::*;
 
 #[derive(Clone, Debug, PartialEq, Properties)]
 pub struct Props {
-  pub enabled: bool,
   pub value: Goal,
+  pub solution: Solution,
   pub on_change: Callback<Goal>
 }
 
 fn value_to_goal(value: &str) -> Goal {
   let from_i = |i: isize| {
-    if (100..=999).contains(&i) { Goal::ValidManual(i) }
-    else { Goal::Invalid }
+    if (100..=999).contains(&i) { Goal::from(i) }
+    else { Goal::undefined() }
   };
   let from_s = |s: &str| {
-    if s.is_empty() { Goal::new() }
-    else { Goal::Invalid }
+    if s.is_empty() { Goal::auto() }
+    else { Goal::undefined() }
   };
   match value.parse::<isize>() {
     Ok(i) => from_i(i),
@@ -29,7 +30,12 @@ fn value_to_goal(value: &str) -> Goal {
 
 #[function_component(GoalView)]
 pub fn goal_view(props: &Props) -> Html {
-  let value = use_state(|| "".to_string());
+  let value = use_state_eq(|| { "".to_owned() });
+  match props.solution {
+    Solution::Unsolved => (),
+    Solution::Reset => value.set("".to_owned()),
+    _ => value.set(props.value.to_string()),
+  }
 
   let on_change = props.on_change.clone();
   let oninput = {
@@ -42,6 +48,8 @@ pub fn goal_view(props: &Props) -> Html {
     })
   };
 
+  let enabled = props.solution == Solution::Unsolved;
+
   html! {
     <div class="goal">
       <Validated valid={props.value.is_valid()}>
@@ -50,6 +58,7 @@ pub fn goal_view(props: &Props) -> Html {
         size="3"
         value={(*value).clone()}
         {oninput}
+        disabled={!enabled}
         placeholder="-auto-" />
       </Validated>
     </div>

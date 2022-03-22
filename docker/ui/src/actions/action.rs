@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Properties)]
 pub struct Action {
   pub caption: String,
   pub icon_class: String,
@@ -10,7 +10,11 @@ pub struct Action {
 }
 
 impl Action {
-  fn new(
+  pub fn undefined() -> Self {
+    Action::new("", "", false, false, Callback::noop())
+  }
+
+  pub fn new(
     caption: &str,
     icon_class: &str,
     enabled: bool,
@@ -24,13 +28,5 @@ impl Action {
       visible,
       on_execute,
     }
-  }
-
-  pub fn reset_action(on_execute: Callback<()>) -> Self {
-    Action::new("Reset", "fas fa-undo", false, false, on_execute)
-  }
-
-  pub fn solve_action(on_execute: Callback<()>) -> Self {
-    Action::new("Solve", "fas fa-play", false, true, on_execute)
   }
 }

@@ -1,8 +1,16 @@
-## sbt project compiled with Scala 3
+# Letters and Numbers
 
-### Usage
-
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
-
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+## Build
+```bash
+> sbt
+$sbt> clean
+$sbt> test
+$sbt> assembly
+$sbt> exit
+> cd ui
+./ui> trunk build --release
+./ui> cd ..
+> docker-compose build
+> docker-compose up -d 
+>
+```

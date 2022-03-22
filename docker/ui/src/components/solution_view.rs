@@ -1,39 +1,23 @@
-// use crate::shared::solution::*;
-//
-// use yew::prelude::*;
-//
-// #[derive(Debug)]
-// pub struct SolutionView {
-//   props: Props,
-//   link: ComponentLink<Self>,
-// }
-//
-// #[derive(Clone, Debug, PartialEq, Properties)]
-// pub struct Props {
-//   pub value: Solution,
-// }
-//
-// impl Component for SolutionView {
-//   type Message = ();
-//   type Properties = Props;
-//
-//   fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-//     Self { props, link }
-//   }
-//
-//   fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-//     false
-//   }
-//
-//   fn change(&mut self, props: Self::Properties) -> ShouldRender {
-//     let render = self.props != props;
-//     self.props = props;
-//     render
-//   }
-//
-//   fn view(&self) -> Html {
-//     html! {
-//       <div class="solution">{self.props.value.to_owned()}</div>
-//     }
-//   }
-// }
+use yew::prelude::*;
+
+use crate::model::solution::*;
+
+#[derive(Clone, Debug, PartialEq, Properties)]
+pub struct Props {
+  pub value: Solution,
+}
+
+#[function_component(SolutionView)]
+pub fn solution_view(props: &Props) -> Html {
+  let value = props.value.clone();
+  let inner_html = match value {
+    Solution::Unsolved => html!{},
+    Solution::Solving => html!{ <p>{"Solving"}</p> },
+    Solution::Solved(s) => html!{ <p>{s.to_string()}</p> },
+    Solution::Reset => html!{},
+  };
+
+  html! {
+    <div class="solution">{ inner_html }</div>
+  }
+}

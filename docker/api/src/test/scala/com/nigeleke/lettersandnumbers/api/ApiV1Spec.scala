@@ -26,14 +26,16 @@ class ApiV1Spec extends AsyncWordSpec with AsyncIOSpec with Matchers:
 
   "The API V1" should {
 
+    val serviceUnderTest = v1.Api.service.orNotFound
+
     "return Ok Some solution when solvable request invoked" in {
       val ns = Seq(1, 2, 3, 4, 5, 6)
       val goal = 720
       val request = Request[IO](Method.GET, makeSolveUri(ns, Some(goal)))
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.Ok)
       }
-      v1.Api.service.run(request).flatMap(_.as[String]).asserting { body =>
+      serviceUnderTest.run(request).flatMap(_.as[String]).asserting { body =>
         body should be("(2 * (3 * (4 * (5 * 6))))")
       }
     }
@@ -42,10 +44,10 @@ class ApiV1Spec extends AsyncWordSpec with AsyncIOSpec with Matchers:
       val ns = Seq(1, 2, 3, 4, 5, 6)
       val goal = 999
       val request = Request[IO](Method.GET, makeSolveUri(ns, Some(goal)))
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.Ok)
       }
-      v1.Api.service.run(request).flatMap(_.as[String]).asserting { body =>
+      serviceUnderTest.run(request).flatMap(_.as[String]).asserting { body =>
         body should be("No Solution")
       }
     }
@@ -54,10 +56,10 @@ class ApiV1Spec extends AsyncWordSpec with AsyncIOSpec with Matchers:
       val ns = Seq(1, 1, 1, 25, 25, 6)
       val goal = 999
       val request = Request[IO](Method.GET, makeSolveUri(ns, Some(goal)))
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.BadRequest)
       }
-      v1.Api.service.run(request).flatMap(_.as[String]).asserting { body =>
+      serviceUnderTest.run(request).flatMap(_.as[String]).asserting { body =>
         body should be("Invalid numbers")
       }
     }
@@ -66,17 +68,17 @@ class ApiV1Spec extends AsyncWordSpec with AsyncIOSpec with Matchers:
       val ns = Seq(1, 2, 3, 4, 5, 6)
       val goal = 9999
       val request = Request[IO](Method.GET, makeSolveUri(ns, Some(goal)))
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.BadRequest)
       }
-      v1.Api.service.run(request).flatMap(_.as[String]).asserting { body =>
+      serviceUnderTest.run(request).flatMap(_.as[String]).asserting { body =>
         body should be("Invalid goal")
       }
     }
 
     "return NotFound when invalid url provided" in {
       val request = Request[IO](Method.GET, uri"/none")
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.NotFound)
       }
     }
@@ -85,7 +87,7 @@ class ApiV1Spec extends AsyncWordSpec with AsyncIOSpec with Matchers:
       val ns = Seq(2, 3, 4, 5, 6)
       val goal = 999
       val request = Request[IO](Method.GET, makeSolveUri(ns, Some(goal)))
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.NotFound)
       }
     }
@@ -93,7 +95,7 @@ class ApiV1Spec extends AsyncWordSpec with AsyncIOSpec with Matchers:
     "return NotFound when not all query parameters provided 2" in {
       val ns = Seq(1, 2, 3, 4, 5, 6)
       val request = Request[IO](Method.GET, makeSolveUri(ns, None))
-      v1.Api.service.run(request).asserting { response =>
+      serviceUnderTest.run(request).asserting { response =>
         response.status should be(Status.NotFound)
       }
     }

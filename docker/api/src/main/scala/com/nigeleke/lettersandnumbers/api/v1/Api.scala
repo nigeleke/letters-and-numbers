@@ -39,4 +39,3 @@ object Api:
           case None                     => NotFound()
         }
     }
-    .orNotFound
