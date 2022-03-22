@@ -13,9 +13,9 @@
 .tasty
 
 # sbt
-*/project/project/
-*/project/target/
-*/target/
+**/project/project/
+**/project/target/
+**/target/
 
 # eclipse
 build/
