@@ -1,6 +1,5 @@
 mod actions;
 mod components;
-mod config;
 mod model;
 
 use yew::prelude::*;
