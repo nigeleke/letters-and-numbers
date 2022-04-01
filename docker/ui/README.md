@@ -1,16 +1,20 @@
 # Letters and Numbers - Rust implementation
 
-## Build
-```
-trunk build --release
-docker-compose build
-```
-## Note
+Environments are:
 
-1. The <code>Backend</code> isn't _really_ a backend. The folder is named as such simply to structure the implementation.
+* dev
+* prod
 
-## Todo
+Requires `api` running in `url` defined by `Config.default().api_url`.
 
-1. Ideally the <code>ResolverService Agent</code> should execute in a non-UI thread. My current understanding of Yew <code>Agent</code>'s
-   is that the <code>Reach</code> should be <code>Public</code> rather than <code>Context</code>.
-   This is currently failing & under investigation.
+## Develop
+
+```trunk serve index-dev.html```
+
+Requires `api` running and exposed in `http://localhost:8088/`
+
+## Release
+
+```trunk build --release index-prod.html```
+
+Requires `api` running and exposed in `http://lettersandnumbers.pi.local/`

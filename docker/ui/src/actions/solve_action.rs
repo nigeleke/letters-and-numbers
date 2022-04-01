@@ -4,6 +4,8 @@ use gloo_net::*;
 use gloo_net::http::*;
 use wasm_bindgen_futures::spawn_local;
 
+use crate::config::config::*;
+
 use crate::model::goal::*;
 use crate::model::numbers::*;
 use crate::model::solution::*;
@@ -33,7 +35,8 @@ impl SolveAction {
 
     async fn make_solve_request_result(goal: Goal, numbers: Numbers) -> Result<String, Error> {
       let values = Vec::from(numbers.clone().values);
-      let url = format!("http://localhost:8088/api/v1/solve?n1={}&n2={}&n3={}&n4={}&n5={}&n6={}&goal={}",
+      let url = format!("{}/api/v1/solve?n1={}&n2={}&n3={}&n4={}&n5={}&n6={}&goal={}",
+                        Config::default().api_url,
                         values[0], values[1], values[2], values[3], values[4], values[5], goal);
       Request::get(&url).send().await?.text().await
     }

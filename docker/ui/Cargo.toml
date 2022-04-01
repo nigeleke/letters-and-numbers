@@ -24,3 +24,8 @@ web-sys = "0.3.56"
 [dev-dependencies]
 quickcheck = "1"
 quickcheck_macros = "1"
+
+[features]
+config-dev = []
+config-staging = []
+config-prod = []
