@@ -1,12 +1,10 @@
-version: "3.9"
-
 services:
   api:
     build:
       context: ./api/
     image: nigeleke/lettersandnumbers-api
     restart: unless-stopped
-    hostname: api
+    hostname: lettersandnumbersapi
     ports:
       - "8088:80"
 
@@ -15,7 +13,7 @@ services:
       context: ./ui/
     image: nigeleke/lettersandnumbers-ui
     restart: unless-stopped
-    hostname: ui
+    hostname: lettersandnumbers
     ports:
       - "8080:80"
     depends_on:

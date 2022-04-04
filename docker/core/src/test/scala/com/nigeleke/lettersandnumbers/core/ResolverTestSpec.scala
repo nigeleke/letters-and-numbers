@@ -66,10 +66,14 @@ class ReolverTestSpec extends AnyWordSpec with Matchers:
         Seq(4, 2) -> Seq(
           Operand(4),
           Operand(2),
-          Operation(6, Operator.Plus, Operand(4), Operand(2)),
           Operation(2, Operator.Minus, Operand(4), Operand(2)),
-          Operation(8, Operator.Times, Operand(4), Operand(2)),
           Operation(2, Operator.Divides, Operand(4), Operand(2))
+        ),
+        Seq(2, 4) -> Seq(
+          Operand(2),
+          Operand(4),
+          Operation(6, Operator.Plus, Operand(2), Operand(4)),
+          Operation(8, Operator.Times, Operand(2), Operand(4))
         )
       )
 

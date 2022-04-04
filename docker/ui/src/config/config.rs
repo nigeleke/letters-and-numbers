@@ -16,7 +16,7 @@ impl Default for Config {
 impl Default for Config {
   fn default() -> Self {
     Config {
-      api_url: "http://lettersandnumbers.pi.local".to_owned(),
+      api_url: "http://pidp11.local/lettersandnumbers".to_owned(),
     }
   }
 }

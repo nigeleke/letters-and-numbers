@@ -15,8 +15,7 @@ class DefectsTestSpec extends AnyWordSpec with Matchers:
 
       failedSolutions.foreach { (numbers, goal) =>
         val results = Resolver.findSolutions(numbers, goal)
-        results.size should be >(0)
+        results.size should be > (0)
       }
-
     }
   }

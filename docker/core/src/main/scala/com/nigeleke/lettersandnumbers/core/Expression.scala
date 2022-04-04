@@ -9,6 +9,7 @@ case class Operand(override val value: Int) extends Expression(value) {
 case class Operation(override val value: Int,
                      operator: Operator,
                      left: Expression,
-                     right: Expression) extends Expression(value) {
+                     right: Expression
+) extends Expression(value) {
   override def toString(): String = s"($left $operator $right)"
 }

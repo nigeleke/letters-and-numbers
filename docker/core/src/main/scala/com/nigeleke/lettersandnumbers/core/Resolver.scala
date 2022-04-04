@@ -17,42 +17,40 @@ object Resolver:
     else if (!isValidGoal) Left("Invalid goal")
     else Right(findSolutions(operands, goal).headOption)
 
+  def findSolutions(operands: Seq[Int], goal: Int): Seq[String] =
+    bestExpressions(operands, goal).map(_.toString)
+
   def bestExpressions(operands: Seq[Int], goal: Int): Seq[Expression] =
     def operationCount(e: Expression): Int =
       e match {
         case Operand(_)            => 0
         case Operation(_, _, l, r) => operationCount(l) + operationCount(r)
       }
-    (for
-      permutation <- operands.permutationOfCombinations
-      expression <- permutation.expressions if expression.value == goal
-    yield expression).sortBy(operationCount)
-
-  def findSolutions(operands: Seq[Int], goal: Int): Seq[String] =
-    bestExpressions(operands, goal).map(_.toString)
+    val expressions =
+      (for
+        permutation <- operands.permutations
+        expression <- permutation.expressions if expression.value == goal
+      yield expression).toSeq
+    expressions.sortBy(operationCount)
 
 extension (values: Seq[Int])
-
-  def permutationOfCombinations: Seq[Seq[Int]] =
-    (for
-      size <- 1 to 6
-      combination <- values.combinations(size)
-      permutation <- combination.permutations
-    yield permutation).toSeq
-
   def expressions: Seq[Expression] =
+    def operations(left: Expression, right: Expression): Seq[Expression] =
+      for
+        operator <- Operator.values
+        value <- operator(left.value, right.value)
+      yield Operation(value, operator, left, right)
+
     values match
       case Nil      => Seq.empty
       case x :: Nil => Seq(Operand(x))
       case _ =>
-        val operandExpressions = values.map(Operand(_))
-        val operationExpressions =
-          for
-            splitIndex <- 1 until values.size
-            (left, right) = values.splitAt(splitIndex)
-            leftExpression <- left.expressions
-            rightExpression <- right.expressions
-            operator <- Operator.values
-            operationValue <- operator(leftExpression.value, rightExpression.value)
-          yield Operation(operationValue, operator, leftExpression, rightExpression)
-        operandExpressions ++ operationExpressions
+        (for
+          i <- 1 to values.size - 1
+          (lops, rops) = values.splitAt(i)
+          (les, res) = (lops.expressions, rops.expressions)
+          appliedExpressions = (for
+            le <- les
+            re <- res
+          yield operations(le, re)).flatten
+        yield les ++ res ++ appliedExpressions).flatten

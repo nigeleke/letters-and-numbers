@@ -1,4 +1,4 @@
-FROM openjdk:latest
+FROM eclipse-temurin:latest
 
 WORKDIR /usr/local/bin/lettersandnumbers/
 
