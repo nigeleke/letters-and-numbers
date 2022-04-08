@@ -18,20 +18,20 @@ object Resolver:
     else Right(findSolutions(operands, goal).headOption)
 
   def findSolutions(operands: Seq[Int], goal: Int): Seq[String] =
-    bestExpressions(operands, goal).map(_.toString)
+    bestExpressions(operands, goal).map(_.toString).distinct
 
   def bestExpressions(operands: Seq[Int], goal: Int): Seq[Expression] =
-    def operationCount(e: Expression): Int =
+    def operandCount(e: Expression): Int =
       e match {
-        case Operand(_)            => 0
-        case Operation(_, _, l, r) => operationCount(l) + operationCount(r)
+        case Operand(_)            => 1
+        case Operation(_, _, l, r) => operandCount(l) + operandCount(r)
       }
     val expressions =
       (for
         permutation <- operands.permutations
         expression <- permutation.expressions if expression.value == goal
       yield expression).toSeq
-    expressions.sortBy(operationCount)
+    expressions.sortBy(operandCount)
 
 extension (values: Seq[Int])
   def expressions: Seq[Expression] =
