@@ -12,15 +12,13 @@ $sbt> exit
 ./ui> cd ..
 > docker-compose build
 > docker-compose up -d 
->
 ```
 
 ## Release
 ```bash
 > cd ui
-./ui> trunk build --release index-prod.html
+./ui> trunk build --release --public-url lettersandnumbers index-prod.html
 ./ui> cd ..
-> docker-compose build
-> docker push nigeleke/lettersandnumbers-api
-> docker push nigeleke/lettersandnumbers-ui
+> docker buildx bake --push --set *.platform=linux/amd64,linux/armq
 ```
+trunk 

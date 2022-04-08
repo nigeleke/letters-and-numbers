@@ -2,7 +2,7 @@ FROM eclipse-temurin:latest
 
 WORKDIR /usr/local/bin/lettersandnumbers/
 
-COPY ./target/scala-3.1.1/ .
+COPY ./target/scala-3.1.1/*.jar .
 
 EXPOSE 80
 
