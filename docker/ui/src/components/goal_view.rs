@@ -1,5 +1,5 @@
-use yew::prelude::*;
 use web_sys::HtmlInputElement;
+use yew::prelude::*;
 
 use crate::model::goal::*;
 use crate::model::solution::*;
@@ -10,27 +10,33 @@ use super::validated::*;
 pub struct Props {
   pub value: Goal,
   pub solution: Solution,
-  pub on_change: Callback<Goal>
+  pub on_change: Callback<Goal>,
 }
 
 fn value_to_goal(value: &str) -> Goal {
   let from_i = |i: isize| {
-    if (100..=999).contains(&i) { Goal::from(i) }
-    else { Goal::undefined() }
+    if (100..=999).contains(&i) {
+      Goal::from(i)
+    } else {
+      Goal::undefined()
+    }
   };
   let from_s = |s: &str| {
-    if s.is_empty() { Goal::auto() }
-    else { Goal::undefined() }
+    if s.is_empty() {
+      Goal::auto()
+    } else {
+      Goal::undefined()
+    }
   };
   match value.parse::<isize>() {
     Ok(i) => from_i(i),
-    Err(_) => from_s(&value)
+    Err(_) => from_s(value),
   }
 }
 
 #[function_component(GoalView)]
 pub fn goal_view(props: &Props) -> Html {
-  let value = use_state_eq(|| { "".to_owned() });
+  let value = use_state_eq(|| "".to_owned());
   match props.solution {
     Solution::Unsolved => (),
     Solution::Reset => value.set("".to_owned()),

@@ -19,21 +19,23 @@ pub struct Props {
 
 fn value_to_number(value: &str) -> Number {
   let from_i = |i: isize| {
-    if (1..=10).contains(&i) || vec![25, 50, 75, 100].contains(&i) { Number::from(i) }
-    else { Number::undefined() }
+    if (1..=10).contains(&i) || vec![25, 50, 75, 100].contains(&i) {
+      Number::from(i)
+    } else {
+      Number::undefined()
+    }
   };
   match value.parse::<isize>() {
     Ok(i) => from_i(i),
-    Err(_) => Number::undefined()
+    Err(_) => Number::undefined(),
   }
 }
 
 #[function_component(NumberView)]
 pub fn number_view(props: &Props) -> Html {
   let value = use_state_eq(|| "".to_string());
-  match props.solution {
-    Solution::Reset => value.set("".to_owned()),
-    _ => (),
+  if props.solution == Solution::Reset {
+    value.set("".to_owned())
   }
 
   let on_change = props.on_change.clone();
@@ -64,5 +66,4 @@ pub fn number_view(props: &Props) -> Html {
       </Validated>
     </div>
   }
-
 }

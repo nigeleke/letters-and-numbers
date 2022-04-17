@@ -5,39 +5,41 @@ use serde::*;
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Numbers {
-  pub values: Vec<Number>
+  pub values: Vec<Number>,
 }
 
 impl Numbers {
   pub fn from(values: &[Number]) -> Self {
     Self {
-      values: Vec::from(values)
+      values: Vec::from(values),
     }
   }
 
   pub fn undefined() -> Self {
     let values = vec![Number::undefined(); 6];
-    Self {
-      values
-    }
+    Self { values }
   }
 
   pub fn is_individually_valid(&self) -> bool {
     let valid_numbers: Vec<&Number> = self.values.iter().filter(|n| n.is_valid()).collect();
-    valid_numbers.len() == 6
+    valid_numbers.iter().len() == 6
   }
 
   pub fn is_valid(&self) -> bool {
-    let valid_numbers: Vec<&Number> = self.values.iter().filter(|n| n.is_valid()).collect();
+    let valid_numbers_len = self.values.iter().filter(|n| n.is_valid()).count();
     let mut counts = self.values.iter().counts_by(|n| n.value);
 
     counts.retain(|i, count| {
-      if (1..=10).contains(i) { *count > 2 }
-      else if vec![25, 50, 75, 100].contains(i) { *count > 1 }
-      else { true }
+      if (1..=10).contains(i) {
+        *count > 2
+      } else if vec![25, 50, 75, 100].contains(i) {
+        *count > 1
+      } else {
+        true
+      }
     });
 
-    valid_numbers.len() == 6 && counts.is_empty()
+    valid_numbers_len == 6 && counts.is_empty()
   }
 
   pub fn number(&self, i: usize) -> Number {

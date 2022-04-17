@@ -1,10 +1,10 @@
 use yew::prelude::*;
 
-use gloo_net::*;
 use gloo_net::http::*;
+use gloo_net::*;
 use wasm_bindgen_futures::spawn_local;
 
-use crate::config::config::*;
+use crate::config::default_config::*;
 
 use crate::model::goal::*;
 use crate::model::numbers::*;
@@ -15,29 +15,33 @@ use super::action::*;
 pub struct SolveAction;
 
 impl SolveAction {
-  pub fn using(goal: &Goal, numbers: &Numbers, solution: &Solution, on_change: Callback<Solution>) -> Action {
+  pub fn using(
+    goal: &Goal,
+    numbers: &Numbers,
+    solution: &Solution,
+    on_change: Callback<Solution>,
+  ) -> Action {
     let goal = goal.clone();
     let numbers = numbers.clone();
 
-    let unsolved = match solution {
-      Solution::Unsolved => true,
-      _ => false
-    };
-
+    let unsolved = matches!(solution, Solution::Unsolved);
     let enabled = unsolved && goal.is_valid() && numbers.is_valid();
-
-    let solved = match solution {
-      Solution::Solved(_) => true,
-      _ => false
-    };
-
+    let solved = matches!(solution, Solution::Solved(_));
     let visible = !solved;
 
     async fn make_solve_request_result(goal: Goal, numbers: Numbers) -> Result<String, Error> {
-      let values = Vec::from(numbers.clone().values);
-      let url = format!("{}/api/v1/solve?n1={}&n2={}&n3={}&n4={}&n5={}&n6={}&goal={}",
-                        Config::default().api_url,
-                        values[0], values[1], values[2], values[3], values[4], values[5], goal);
+      let values = numbers.clone().values;
+      let url = format!(
+        "{}/api/v1/solve?n1={}&n2={}&n3={}&n4={}&n5={}&n6={}&goal={}",
+        DefaultConfig::default().api_url,
+        values[0],
+        values[1],
+        values[2],
+        values[3],
+        values[4],
+        values[5],
+        goal
+      );
       Request::get(&url).send().await?.text().await
     }
 
@@ -46,7 +50,9 @@ impl SolveAction {
       let response = make_solve_request_result(goal, numbers);
       match response.await {
         Ok(r) => on_change.emit(Solution::Solved(r)),
-        Err(_e) => on_change.emit(Solution::Solved("Failed to get solution - try later.".to_owned()))
+        Err(_e) => on_change.emit(Solution::Solved(
+          "Failed to get solution - try later.".to_owned(),
+        )),
       };
     }
 
