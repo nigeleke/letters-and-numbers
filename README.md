@@ -22,3 +22,7 @@ Warning - The Laminar code and constructs are not pretty - especially wrt to sig
 ## Rust
 
 This is my first Rust program, so don't take this as an idiomatic way to write Rust. Nevertheless I wanted a reasonable sized sample program to get my teeth stuck into.
+
+## Docker
+
+An simple example used for a Docker presentation. Brings togehter the Scala and Rust examples in a simple client/server example. The front-end uses [Rust](https://www.rust-lang.org/) / [Yew](https://yew.rs/) and the backend uses [Scala](https://scala-lang.org/) / [http4s](https://http4s.org/). 
