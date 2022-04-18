@@ -19,6 +19,5 @@ $sbt> exit
 > cd ui
 ./ui> trunk build --release --public-url lettersandnumbers index-prod.html
 ./ui> cd ..
-> docker buildx bake --push --set *.platform=linux/amd64,linux/armq
+> docker buildx bake --push --set *.platform=linux/amd64,linux/arm
 ```
-trunk 
