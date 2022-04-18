@@ -12,6 +12,9 @@ body {
   min-height: 99vh;
   background: linear-gradient(45deg, color.$theme-d1 50%, color.$theme-l1 100%);
   font-size: 1.5rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 header,
@@ -61,6 +64,8 @@ datalist option::focus {
   font-size: 1.5rem;
   margin-top: 2.5rem;
   padding: 0.3rem;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
   border-radius: 0.5rem;
 }
 
@@ -78,6 +83,8 @@ datalist option::focus {
 .goal * > input {
   font-size: 3rem;
   text-align: center;
+  -webkit-border-radius: 0.75rem;
+  -moz-border-radius: 0.75rem;
   border-radius: 0.75rem;
 }
 
@@ -100,6 +107,8 @@ datalist option::focus {
 .number * > input {
   font-size: 2rem;
   text-align: center;
+  -webkit-border-radius: 0.75rem;
+  -moz-border-radius: 0.75rem;
   border-radius: 0.75rem;
 }
 
