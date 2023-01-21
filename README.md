@@ -25,4 +25,4 @@ This is my first Rust program, so don't take this as an idiomatic way to write R
 
 ## Docker
 
-An simple example used for a Docker presentation. Brings togehter the Scala and Rust examples in a simple client/server example. The front-end uses [Rust](https://www.rust-lang.org/) / [Yew](https://yew.rs/) and the backend uses [Scala](https://scala-lang.org/) / [http4s](https://http4s.org/). 
+An simple example used for a Docker presentation. Brings the Scala together with a new Elm frontend in a simple client/server example. The front-end uses [Elm](https://elm-lang.org/) (current TBD on compontentisation - elm-ui versus elm-widgets) and the backend uses [Scala](https://scala-lang.org/) / [http4s](https://http4s.org/). 

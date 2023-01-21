@@ -10,7 +10,7 @@ services:
 
   ui:
     build:
-      context: ./ui/
+      context: ui-rust/
     image: nigeleke/lettersandnumbers-ui
     restart: unless-stopped
     hostname: lettersandnumbers

@@ -53,3 +53,6 @@ dist/
 
 #general
 *.class
+
+#elm
+elm-stuff/
