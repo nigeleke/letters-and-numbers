@@ -54,5 +54,5 @@ dist/
 #general
 *.class
 
-#elm
-elm-stuff/
+# zig
+zig-cache/

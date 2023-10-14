@@ -25,4 +25,14 @@ This is my first Rust program, so don't take this as an idiomatic way to write R
 
 ## Docker
 
-An simple example used for a Docker presentation. Brings the Scala together with a new Elm frontend in a simple client/server example. The front-end uses [Elm](https://elm-lang.org/) (current TBD on compontentisation - elm-ui versus elm-widgets) and the backend uses [Scala](https://scala-lang.org/) / [http4s](https://http4s.org/). 
+An simple example used for a Docker presentation. Brings together the Scala and Rust examples in a simple client/server example. The front-end uses [Rust](https://www.rust-lang.org/) / [Yew](https://yew.rs/) and the backend uses [Scala](https://scala-lang.org/) / [http4s](https://http4s.org/). 
+
+## Zig
+
+This is my first Zig program, so don't take this as an idiomatic way to write Zig. It was written to compare against Rust - and my noobie frustrations with Rust's borrow checker.
+
+It may be because I don't have enough experience in Zig but in the end this isn't giving me the same safety as Rust; During development  I have had too many errors occurring at runtime.  The currently implementation is not completed. The Expression.from() method is very slow.
+
+I haven't found enough benefits of Zig over C++ to make me want to delve deeper and I have found enough frustrations in the idioms of the language such that I'll park it and switch back to Rust.
+
+I'm more than happy for an experienced Zigger to take this example further so I can better understand the concepts I'm clearly missing.
