@@ -20,7 +20,7 @@ fn permutations(ns []int) [][]int {
   return results
 }
 
-pub fn combinations(ns []int, n int) [][]int {
+fn combinations(ns []int, n int) [][]int {
 	mut results := [][]int{}
   for i in 0..ns.len {
     if n == 1 {
