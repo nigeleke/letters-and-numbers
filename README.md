@@ -36,3 +36,7 @@ It may be because I don't have enough experience in Zig but in the end this isn'
 I haven't found enough benefits of Zig over C++ to make me want to delve deeper and I have found enough frustrations in the idioms of the language such that I'll park it and switch back to Rust.
 
 I'm more than happy for an experienced Zigger to take this example further so I can better understand the concepts I'm clearly missing.
+
+## V
+
+This is my first V program, so don't take this as an idiomatic way to write V. It was written to try out the language wrt this program. It has proved quite successful, easy to learn with a simple syntax.  The UI & Web libraries may get investigated further and included here for comparison too.
