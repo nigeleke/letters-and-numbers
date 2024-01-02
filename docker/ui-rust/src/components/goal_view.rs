@@ -63,6 +63,7 @@ pub fn goal_view(props: &Props) -> Html {
     <div class={class}>
       <Validated valid={props.value.is_valid()}>
         <input
+        class={class}
         type="text"
         size="3"
         value={(*value).clone()}

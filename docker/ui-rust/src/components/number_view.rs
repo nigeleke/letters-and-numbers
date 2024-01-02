@@ -16,7 +16,7 @@ pub struct Props {
 
 fn value_to_number(value: &str) -> Number {
   let from_i = |i: isize| {
-    if (1..=10).contains(&i) || vec![25, 50, 75, 100].contains(&i) {
+    if (1..=10).contains(&i) || [25, 50, 75, 100].contains(&i) {
       Number::from(i)
     } else {
       Number::undefined()
@@ -55,6 +55,7 @@ pub fn number_view(props: &Props) -> Html {
     <div class={class}>
       <Validated valid={props.value.is_valid()} use_icon=true >
         <input
+          class={class}
           type="text"
           size="2"
           list="number-data"

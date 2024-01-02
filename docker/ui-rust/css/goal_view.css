@@ -1,6 +1,6 @@
 div {
     padding-top: 2rem;
-    * > input {
+    input {
         font-size: 3rem;
         text-align: center;
         -webkit-border-radius: 0.75rem;

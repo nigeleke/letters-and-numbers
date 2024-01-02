@@ -1,4 +1,3 @@
-use style4rs::style;
 use yew::prelude::*;
 
 use super::warning_border::*;
@@ -20,22 +19,15 @@ pub struct Props {
 
 #[function_component(Validated)]
 pub fn validated(props: &Props) -> Html {
-  let class = style! {
-    span {
-      display: flex;
-      flex-direction: row;
-    }
-  };
-  
   let border_warning = !props.valid && props.use_border;
   let icon_warning = !props.valid && props.use_icon;
 
   html! {
-      <span class={class}>
+      <>
         <WarningBorder warn={border_warning}>
           { for props.children.iter() }
         </WarningBorder>
         <WarningIcon warn={icon_warning} />
-      </span>
+      </>
     }
 }

@@ -21,7 +21,7 @@ impl Number {
 
   pub fn is_valid(&self) -> bool {
     (1..=10).contains(&self.value) ||
-      vec![25, 50, 75, 100].contains(&self.value)
+      [25, 50, 75, 100].contains(&self.value)
   }
 }
 

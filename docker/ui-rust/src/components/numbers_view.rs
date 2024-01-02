@@ -20,7 +20,7 @@ pub fn numbers_view(props: &Props) -> Html {
   let class = style!{
     div {
       padding-top: 1rem;
-      :deep(* span) {
+      span {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-evenly;
@@ -34,6 +34,26 @@ pub fn numbers_view(props: &Props) -> Html {
 
   html! {
       <div class={class}>
+        <Validated {valid} {use_border} use_icon=false>
+          <span class={class}>
+            {
+              for (0..6).into_iter().map(|i| {
+                let on_numbers_change = props.on_change.clone();
+                let value = value.clone();
+                let number = value.number(i);
+
+                let on_number_change = Callback::from(move |n: Number| {
+                  let updated_numbers = value.updated(i, n);
+                  on_numbers_change.emit(updated_numbers.to_owned());
+                });
+
+                html!{ 
+                  <NumberView value={number} solution={solution.clone()} on_change={on_number_change} />
+                }
+              })
+            }
+          </span>
+        </Validated>
         <datalist id="number-data">
           <option value="1" />
           <option value="2" />
@@ -50,22 +70,6 @@ pub fn numbers_view(props: &Props) -> Html {
           <option value="75" />
           <option value="100" />
         </datalist>
-        <Validated {valid} {use_border} use_icon=false>
-          {
-            for (0..6).into_iter().map(|i| {
-              let on_numbers_change = props.on_change.clone();
-              let value = value.clone();
-              let number = value.number(i);
-
-              let on_number_change = Callback::from(move |n: Number| {
-                let updated_numbers = value.updated(i, n);
-                on_numbers_change.emit(updated_numbers.to_owned());
-              });
-
-              html!{ <NumberView value={number} solution={solution.clone()} on_change={on_number_change} /> }
-            })
-          }
-        </Validated>
       </div>
     }
 }
