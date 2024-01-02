@@ -1,3 +1,4 @@
+use style4rs::style;
 use yew::prelude::*;
 
 use crate::model::number::*;
@@ -16,13 +17,23 @@ pub struct Props {
 
 #[function_component(NumbersView)]
 pub fn numbers_view(props: &Props) -> Html {
+  let class = style!{
+    div {
+      padding-top: 1rem;
+      :deep(* span) {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+      }
+    }
+  };
   let value = props.value.clone();
   let valid = value.is_valid();
   let solution = props.solution.clone();
   let use_border = value.is_individually_valid();
 
   html! {
-      <div class="numbers">
+      <div class={class}>
         <datalist id="number-data">
           <option value="1" />
           <option value="2" />

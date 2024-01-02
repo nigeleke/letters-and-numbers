@@ -1,3 +1,4 @@
+use style4rs::style;
 use yew::prelude::*;
 
 use crate::actions::action::*;
@@ -17,6 +18,15 @@ use std::ops::Deref;
 
 #[function_component(Desktop)]
 pub fn desktop() -> Html {
+  let class = style! {
+    div {
+      display: flex;
+      flex-flow: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+  };
+
   let solution_state = use_state(Solution::unsolved);
   let solution = solution_state.deref().clone();
 
@@ -56,7 +66,7 @@ pub fn desktop() -> Html {
   let reset_action = reset_action_ref.deref().clone().into_inner();
 
   html! {
-    <div class="desktop">
+    <div class={class}>
       <NumbersView value={numbers} solution={solution.clone()} on_change={on_numbers_change} />
       <GoalView value={goal} solution={solution.clone()} on_change={on_goal_change} />
       <span>

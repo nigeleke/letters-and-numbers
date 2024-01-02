@@ -1,3 +1,4 @@
+use style4rs::style_sheet;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
@@ -36,6 +37,8 @@ fn value_to_goal(value: &str) -> Goal {
 
 #[function_component(GoalView)]
 pub fn goal_view(props: &Props) -> Html {
+  let class = style_sheet!("css/goal_view.css");
+
   let value = use_state_eq(|| "".to_owned());
   match props.solution {
     Solution::Unsolved => (),
@@ -57,7 +60,7 @@ pub fn goal_view(props: &Props) -> Html {
   let enabled = props.solution == Solution::Unsolved;
 
   html! {
-    <div class="goal">
+    <div class={class}>
       <Validated valid={props.value.is_valid()}>
         <input
         type="text"

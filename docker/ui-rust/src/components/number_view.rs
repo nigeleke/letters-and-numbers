@@ -1,8 +1,5 @@
+use style4rs::style_sheet;
 use web_sys::HtmlInputElement;
-// use super::validated::*;
-//
-// use crate::shared::number::*;
-//
 use yew::prelude::*;
 
 use crate::model::number::*;
@@ -33,6 +30,8 @@ fn value_to_number(value: &str) -> Number {
 
 #[function_component(NumberView)]
 pub fn number_view(props: &Props) -> Html {
+  let class = style_sheet!("css/number_view.css");
+
   let value = use_state_eq(|| "".to_string());
   if props.solution == Solution::Reset {
     value.set("".to_owned())
@@ -53,7 +52,7 @@ pub fn number_view(props: &Props) -> Html {
   let enabled = props.solution == Solution::Unsolved;
 
   html! {
-    <div class="number">
+    <div class={class}>
       <Validated valid={props.value.is_valid()} use_icon=true >
         <input
           type="text"

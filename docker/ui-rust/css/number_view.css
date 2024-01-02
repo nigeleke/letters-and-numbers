@@ -1,0 +1,13 @@
+div {
+    padding-top: 0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+      
+    * input {
+        font-size: 2rem;
+        text-align: center;
+        -webkit-border-radius: 0.75rem;
+        -moz-border-radius: 0.75rem;
+        border-radius: 0.75rem;
+    }    
+}
