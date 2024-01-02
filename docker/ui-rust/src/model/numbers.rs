@@ -32,7 +32,7 @@ impl Numbers {
     counts.retain(|i, count| {
       if (1..=10).contains(i) {
         *count > 2
-      } else if vec![25, 50, 75, 100].contains(i) {
+      } else if [25, 50, 75, 100].contains(i) {
         *count > 1
       } else {
         true
@@ -52,25 +52,3 @@ impl Numbers {
     Numbers::from(&values)
   }
 }
-
-/*
-fn validate_group(ns: &[Number]) -> bool {
-  fn value_of(n: &Number) -> isize {
-    match *n {
-      Number::Valid(i) => i,
-      Number::Invalid => 0
-    }
-  }
-
-  let number_values: Vec<isize> = ns.iter().map(|n| value_of(n)).collect();
-  let mut counts = number_values.iter().counts_by(|n| n);
-
-  counts.retain(|i, count| {
-    if (1..=10).contains(*i) { *count > 2 }
-    else if vec![25, 50, 75, 100].contains(*i) { *count > 1 }
-    else { true }
-  });
-
-  counts.is_empty()
-}
- */

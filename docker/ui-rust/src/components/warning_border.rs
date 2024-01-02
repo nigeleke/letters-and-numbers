@@ -22,6 +22,8 @@ pub fn warning_border(props: &Props) -> Html {
   let class = if props.warn { class } else { "" };
 
   html! {
-    <span class={class}>{ for props.children.iter() }</span>
+    <span class={class}>
+      { for props.children.iter() }
+    </span>
   }
 }
