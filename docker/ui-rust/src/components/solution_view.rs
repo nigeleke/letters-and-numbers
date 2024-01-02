@@ -1,3 +1,4 @@
+use style4rs::style;
 use yew::prelude::*;
 
 use crate::model::solution::*;
@@ -9,6 +10,13 @@ pub struct Props {
 
 #[function_component(SolutionView)]
 pub fn solution_view(props: &Props) -> Html {
+  let class = style!{
+    div {
+      padding-top: 3rem;
+      font-size: 2.5rem;
+    }
+  };
+
   let value = props.value.clone();
   let inner_html = match value {
     Solution::Unsolved => html!{},
@@ -18,6 +26,6 @@ pub fn solution_view(props: &Props) -> Html {
   };
 
   html! {
-    <div class="solution">{ inner_html }</div>
+    <div class={class}>{ inner_html }</div>
   }
 }

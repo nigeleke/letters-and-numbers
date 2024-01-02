@@ -1,0 +1,8 @@
+button {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    padding: 0.3rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    border-radius: 0.5rem;    
+}
