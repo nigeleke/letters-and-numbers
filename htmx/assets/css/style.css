@@ -1,0 +1,67 @@
+html {
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10vh;
+    align-items: center;
+    height: 100vh;
+    font-size: x-large;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: ghostwhite;
+    background: linear-gradient(45deg, #708da2 50%, #708da2 100%);
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10vh;
+    align-items: center;
+}
+
+footer {
+    font-size: small;
+}
+
+input {
+    border-radius: 8px;
+    text-align: center;
+    font-size: x-large;
+}
+
+button {
+    border-radius: 8px;
+    font-size: x-large;
+    padding: 5px 10px;
+}
+
+div.validated {
+    position: relative;
+}
+
+div.validated span.validated.warning::after {
+    content: "⚠️";
+    font-size: 0.75rem;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform: translateX(-1.25rem);
+}
+
+div.numbers-outer {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+div.numbers-inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 2vw;
+    padding: 10px;
+}
