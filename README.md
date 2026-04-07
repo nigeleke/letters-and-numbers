@@ -40,3 +40,7 @@ I'm more than happy for an experienced Zigger to take this example further so I 
 ## V
 
 This is my first V program, so don't take this as an idiomatic way to write V. It was written to try out the language wrt this program. It has proved quite successful, easy to learn with a simple syntax.  The UI & Web libraries may get investigated further and included here for comparison too.
+
+## Gleam
+
+This is my first Gleam program, so don't take this as an idiomatic way to write Gleam. It was written to try out the language wrt this program (do you see a theme here?). The translation into Gleam was super straight-forward; very easy language to learn.
