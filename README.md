@@ -43,4 +43,6 @@ This is my first V program, so don't take this as an idiomatic way to write V. I
 
 ## Gleam
 
-This is my first Gleam program, so don't take this as an idiomatic way to write Gleam. It was written to try out the language wrt this program (do you see a theme here?). The translation into Gleam was super straight-forward; very easy language to learn.
+This is my first Gleam program, so don't take this as an idiomatic way to write Gleam. It was written to try out the language wrt this program (do you see a theme here?). The translation of the core alogorithn into Gleam was super straight-forward; very easy language to learn.
+
+The creation of the client/server solution was also pretty easy; the clunkiest bit was ensuring I had the correct versions of Erlang  & rebar3 installed. The only things I wish for would be a `rust serde` way of serialising and deserialising json and a `dioxus server function` approach to using apis.

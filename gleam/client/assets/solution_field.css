@@ -1,0 +1,7 @@
+.solution-field {
+    display: grid;
+    grid-template-rows: auto;
+    font-size: xx-large;
+    justify-items: center;
+    padding-bottom: 2rem;
+}

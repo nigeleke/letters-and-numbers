@@ -1,0 +1,18 @@
+.number-field {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.number-field > input {
+    text-align: center;
+    width: 4ch;
+}
+
+.number-field > .valid {
+    border: 1px solid transparent;
+}
+
+.number-field > .invalid {
+    border: 1px solid var(--color-warning);
+}

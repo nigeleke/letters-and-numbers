@@ -25,7 +25,7 @@ pub fn a_resolver_returns_a_none_result_for_an_impossible_goal_test() {
 pub fn a_resolver_returns_valid_expressions_for_defects_test() {
   let defects = [
     Defect([75, 3, 6, 5, 5, 1], 559),
-    // Defect([5, 8, 8, 2, 100, 50], 543),
+    Defect([5, 8, 8, 2, 100, 50], 543),
   ]
 
   defects

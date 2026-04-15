@@ -1,0 +1,24 @@
+.goal-field {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    font-size: xx-large;
+    justify-items: center;
+}
+
+.goal-field > input {
+    text-align: center;
+    width: 10ch;
+}
+
+.goal-field > .valid {
+    border: 1px solid transparent;
+}
+
+.goal-field > .invalid {
+    border: 1px solid var(--color-warning);
+}
+
+.goal-field__error {
+    font-size: 0.8em;
+    color: var(--color-warning);
+}

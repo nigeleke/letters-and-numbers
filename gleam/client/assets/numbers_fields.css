@@ -1,0 +1,17 @@
+.numbers-fields {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    font-size: x-large;
+    justify-items: center;
+}
+
+.numbers-fields__numbers {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.numbers-fields__error {
+    font-size: 0.8em;
+    color: var(--color-warning);
+}

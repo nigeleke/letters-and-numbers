@@ -1,0 +1,21 @@
+#app {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-block-size: 100dvh;
+    justify-items: center;
+    background-color: #546f82;
+    font-family:
+        "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+#app * .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+#app header {
+    padding-bottom: 2rem;
+}
